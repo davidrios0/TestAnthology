@@ -1,0 +1,58 @@
+{
+	"info": {
+		"_postman_id": "dd5d470c-5405-4ae4-8876-8ea6734e7c21",
+		"name": "TestAnthology",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get text from a file",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/documents/testDocument_1.pdf",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents",
+						"testDocument_1.pdf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get similarity of two files",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"documentId1\": \"testDocument_1.pdf\",\r\n    \"documentId2\": \"testDocument_2.pdf\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/documents/compare",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"documents",
+						"compare"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -58,6 +58,8 @@ public class TextProcessor {
 
     public static Map<String, Object> getSimilarity(String text_1, String text_2) {
 
+        long startTime = System.currentTimeMillis();
+
         Map<String, List<Integer>> referenceText = getCompareText(text_2);
         List<String> wordsText_1 = textToArray(text_1);
         List<String> wordsText_2 = textToArray(text_2);
@@ -129,6 +131,9 @@ public class TextProcessor {
 
         float percentage = similarityPercentage(matchingWords, wordsText_1.size() + wordsText_2.size());
 
+        long endTime = System.currentTimeMillis();
+
+        result.put("executed_time", endTime - startTime + " miliseconds");
         result.put("similarity_percentage", percentage);
         result.put("common_word_count", matchingWords.size());
         result.put("common_sentences", new ArrayList<>(keySentences));
