@@ -12,19 +12,19 @@ The URI is configured through the load balancer, in case there are multiple inst
 It is important to mention that in each iteration, comparisons could be made with multiple texts, meaning that with a single pass, similarities can be found between one text and others. The only requirement would be to perform the *indexing process* on the other texts, which could already be stored in a database, for example. <br>
 Additionally, we can say this process allows us to find matching sentences literally, but a component can be added with a language model to validate that the matching sentences make semantic sense and are not just isolated words. It may not detect paraphrasing, but it does provide a first approximation. That is, if two texts have a high similarity percentage using this method, it doesn’t make sense to spend resources on more complex processing, such as a language model: it would serve as a quick first filter. <br>
 
-## Requisitos previos
-Antes de ejecutar el proyecto, asegúrate de tener las siguientes herramientas instaladas:
+## Prerequisites
+Before running the project, make sure you have the following tools installed.:
 - Java 17
 - Maven
-Se puede verificar mediante los comandos: 
+It can be verified using the following commands:
 ```bash
 java -version
 mvn -v
 ```
 
-## Ejecución del proyecto
-1. **Instalación de dependencias**:
-Ve a cada una de las carpetas del proyecto, y ejecuta el comando Maven:
+## Running the Project
+1. **Installing dependencies**:
+Go to each of the project folders and run the Maven command:
 
 1.1 **Eureka Server**
 ```bash
@@ -50,4 +50,40 @@ cd ../comparison-microservice
 mvn clean install
 ```
 
+2. **Execution**:
+Go to each of the project folders (in the same order), and run the Maven command:
 
+2.1 **Eureka Server**
+```bash
+cd eureka-server
+mvn spring-boot:run
+```
+
+2.2 **Api Gateway**
+```bash
+cd ../api-gateway-service
+mvn spring-boot:run
+```
+
+2.3 **Document management microservice**
+```bash
+cd ../management-microservice
+mvn spring-boot:run
+```
+
+2.4 **Document comparison microservice**
+```bash
+cd ../comparison-microservice
+mvn spring-boot:run
+```
+
+Now the services are active, you can verify in a browser at *http://localhost:8761* that the Eureka server instance is running and that the other services are connected to it.
+The API Gateway is then located at *http://localhost:8080*, and it has the following paths:
+- *http://localhost:8080/documents/compare*: It corresponds to a POST request, and it receives as parameters the names of two documents stored in the test-documents folder. An example of the request body would be:
+```bash
+{
+    "documentId1": "testDocument.pdf",
+    "documentId2": "testDocument2.pdf"
+}
+```
+-*http://localhost:8080/documents/{name_document}*: It corresponds to a GET request and returns the text of a document. The document name is passed as a parameter in the URL, for example *http://localhost:8080/documents/testDocument.pdf*
