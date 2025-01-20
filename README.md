@@ -1,3 +1,6 @@
 Document Comparison Project
 
-This project has been developed 
+This project focuses on the processing and comparison of two documents, evaluating their potential similarity. It is developed using the Spring Boot framework with JAVA 17 and MAVEN, and consists of four parts:
+- **Eureka Server**: It is a Spring Boot project, and its role is to register all the microservices, enabling them to connect with each other and with the API Gateway. It also provides the ability to query the status of each service, which becomes useful as the project begins to scale, offering more information for resource management.
+- **API Gateway**: It is a Spring Boot project that connects to Eureka Server as a client and is responsible for redirecting paths to the microservices. It is configured on port 8080 and has the path */documents/comparison/*** mapped to the microservice COMPARISON-MICROSERVICE and the path */documents/*** to the microservice MANAGEMENT-MICROSERVICE. 
+The URI is configured through the load balancer, in case there are multiple instances of each microservice to keep the project scalable. The port can be changed in the file **application.properties.
