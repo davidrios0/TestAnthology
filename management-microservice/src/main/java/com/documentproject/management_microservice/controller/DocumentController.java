@@ -2,6 +2,8 @@ package com.documentproject.management_microservice.controller;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,22 +15,22 @@ import java.io.IOException;
 public class DocumentController {
 
     @GetMapping("/documents/{fileName}")
-    public static String getText(@PathVariable String fileName) {
+    public static ResponseEntity<String> getText(@PathVariable String fileName) {
 
         File pdfFile = new File("..\\test-documents\\" + fileName);
 
         if (!pdfFile.exists()) {
-            return "No existe el documento";
+            return new ResponseEntity<>("File not founded", HttpStatus.NOT_FOUND);
         }
 
         try (PDDocument document = PDDocument.load(pdfFile)) {
             PDFTextStripper pdfStripper = new PDFTextStripper();
             String text = pdfStripper.getText(document);
             document.close();
-            return text;
+            return new ResponseEntity<>(text, HttpStatus.OK);
         }
         catch (IOException e) {
-            return "Hubo un error al procesar el documento: " + e.getMessage();
+            return new ResponseEntity<>("Error processing document:" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
