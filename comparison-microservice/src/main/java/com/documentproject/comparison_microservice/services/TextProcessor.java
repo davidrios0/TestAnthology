@@ -9,7 +9,7 @@ public class TextProcessor {
 
         text = text.toLowerCase();
 
-        String[] words = text.split("[,.¿? ]");
+        String[] words = text.split("[,.¿?;¡!: \\n\\r]+");
 
         List<String> wordList = new ArrayList<>();
         for (String word : words) {
@@ -44,8 +44,19 @@ public class TextProcessor {
     }
 
 
+    public static Float similarityPercentage(Map<String, Map<String, Integer>> matchWords, Integer totalWords) {
+        int countMatchingWords = 0;
+        for (String word : matchWords.keySet()) {
+            countMatchingWords += matchWords.get(word).get("text_1");
+            countMatchingWords += matchWords.get(word).get("text_2");
+        }
+        float percentage = (float) (countMatchingWords * 100.0 / totalWords);
+        return percentage;
+    }
 
-    public static List<String> getSimilarity(String text_1, String text_2) {
+
+
+    public static Map<String, Object> getSimilarity(String text_1, String text_2) {
 
         Map<String, List<Integer>> referenceText = getCompareText(text_2);
         List<String> wordsText_1 = textToArray(text_1);
@@ -114,7 +125,15 @@ public class TextProcessor {
 
         Set<String> keySentences = matchingSentences.keySet();
 
-        return new ArrayList<>(keySentences);
+        Map<String, Object> result = new HashMap<>();
+
+        float percentage = similarityPercentage(matchingWords, wordsText_1.size() + wordsText_2.size());
+
+        result.put("similarity_percentage", percentage);
+        result.put("common_word_count", matchingWords.size());
+        result.put("common_sentences", new ArrayList<>(keySentences));
+
+        return result;
     }
 
 }
